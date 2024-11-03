@@ -3,12 +3,15 @@ import config from './config';
 import startCommand from './commands/start';
 import answerQuery from './queries/answerQueries';
 import showMainMenu from './utils/functions';
+import pool from './db';
+import authentication from './commands/auth';
 
 require('dotenv').config();
 
 const bot = new TelegramBot(config.botToken, { polling: true });
 
 startCommand(bot);
+authentication(bot);
 
 answerQuery(bot, 'homecoming', async (query) => {
   bot.editMessageText('برای شروع میتونی پیام ناشناس برای ما بفرستی :)', {
