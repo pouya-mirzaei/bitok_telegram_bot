@@ -2,8 +2,7 @@ import TelegramBot from 'node-telegram-bot-api';
 import config from './config';
 import startCommand from './commands/start';
 import answerQuery from './queries/answerQueries';
-import showMainMenu from './utils/functions';
-import pool from './db';
+import { notifyAdmins, showMainMenu } from './utils/functions';
 import authentication from './commands/auth';
 
 require('dotenv').config();
@@ -23,7 +22,7 @@ answerQuery(bot, 'homecoming', async (query) => {
   });
 
   bot.once('message', (msg) => {
-    console.log('replying =>' + msg.text);
+    notifyAdmins(bot, msg, query.message?.message_id);
   });
 });
 

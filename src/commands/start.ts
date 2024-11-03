@@ -1,8 +1,10 @@
 import TelegramBot from 'node-telegram-bot-api';
-import showMainMenu from '../utils/functions';
+import { showMainMenu } from '../utils/functions';
 
 const startCommand = (bot: TelegramBot) => {
   bot.onText(/\/start/, (msg: TelegramBot.Message) => {
+    // console.log('Hello');
+
     showMainMenu(bot, msg.chat.id);
   });
 };
