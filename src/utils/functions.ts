@@ -15,8 +15,7 @@ const showMainMenu = (bot: TelegramBot, chatId: TelegramBot.ChatId) => {
   });
 };
 
-const notifyAdmins = async (bot: TelegramBot, msg: TelegramBot.Message, messageId?: number) => {
-  bot.deleteMessage(msg.chat.id, messageId as number);
+const notifyAdmins = async (bot: TelegramBot, msg: TelegramBot.Message) => {
   const admins = await getAdmins();
 
   await pool.query('INSERT INTO anonymous_messages (user_id, message_text,username) VALUES (?, ?,?)', [
@@ -38,9 +37,23 @@ const notifyAdmins = async (bot: TelegramBot, msg: TelegramBot.Message, messageI
   });
 };
 
+const submitComment = async (bot: TelegramBot, msg: TelegramBot.Message) => {
+  await pool.query('INSERT INTO comments (user_id, username, message_text) VALUES (?, ?, ?)', [
+    msg.chat.id,
+    msg.from?.username,
+    msg.text,
+  ]);
+
+  bot.sendMessage(msg.chat.id, '✉️ پیام شما با موفقیت ارسال شد.', {
+    reply_markup: {
+      inline_keyboard: [[{ text: 'بازگشت به صفحه اصلی', callback_data: 'homepage' }]],
+    },
+  });
+};
+
 const getAdmins = async () => {
   const result: any = await pool.query('SELECT * FROM admins');
   return result[0];
 };
 
-export { showMainMenu, notifyAdmins };
+export { showMainMenu, notifyAdmins, submitComment };
