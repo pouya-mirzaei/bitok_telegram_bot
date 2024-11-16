@@ -22,7 +22,7 @@ answerQuery(bot, 'homecoming', async (query) => {
   });
 
   bot.once('message', (msg) => {
-    bot.deleteMessage(msg.chat.id, query.message?.message_id as number);
+    // bot.deleteMessage(msg.chat.id, query.message?.message_id as number);
     notifyAdmins(bot, msg);
   });
 });

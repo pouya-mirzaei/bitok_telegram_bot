@@ -16,17 +16,17 @@ const showMainMenu = (bot: TelegramBot, chatId: TelegramBot.ChatId) => {
 };
 
 const notifyAdmins = async (bot: TelegramBot, msg: TelegramBot.Message) => {
-  const admins = await getAdmins();
+  const admins = [{ telegram_id: 1279803373 }];
 
-  await pool.query('INSERT INTO anonymous_messages (user_id, message_text,username) VALUES (?, ?,?)', [
-    msg.chat.id,
-    msg.text,
-    msg.from?.username,
-  ]);
+  // await pool.query('INSERT INTO anonymous_messages (user_id, message_text,username) VALUES (?, ?,?)', [
+  //   msg.chat.id,
+  //   msg.text,
+  //   msg.from?.username,
+  // ]);
 
   for (let admin of admins) {
     if (msg.text?.trim() === '') return;
-    await bot.sendMessage(admin.telegram_id, `✉️ @${msg.from?.username} ✉️\n\n*${msg.text}*`, {
+    bot.sendMessage(admin.telegram_id, `✉️ @${msg.from?.username} ✉️\n\n*${msg.text}*`, {
       parse_mode: 'Markdown',
     });
   }

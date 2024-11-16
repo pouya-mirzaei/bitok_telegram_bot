@@ -3,8 +3,6 @@ import { showMainMenu } from '../utils/functions';
 
 const startCommand = (bot: TelegramBot) => {
   bot.onText(/\/start/, (msg: TelegramBot.Message) => {
-    // console.log('Hello');
-
     showMainMenu(bot, msg.chat.id);
   });
 };
